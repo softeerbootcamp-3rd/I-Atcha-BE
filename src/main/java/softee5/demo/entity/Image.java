@@ -7,8 +7,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long imageID;
-    private Long historyID;
-    private int takeTime;
+    private int parkingTime;
     private String link;
 
     @ManyToOne

@@ -11,8 +11,8 @@ public class Parking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long parkingID;
     private String name;
-    private double lat;
-    private double lon;
+    private double latitude;
+    private double longitude;
     private String fee;
     private String discount;
     private String runtime;
