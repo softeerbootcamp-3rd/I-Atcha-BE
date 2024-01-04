@@ -7,10 +7,6 @@ public class History {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long historyID;
-    private Long memberID;
-    private Long memoID;
-    private Long parkingID;
-
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
