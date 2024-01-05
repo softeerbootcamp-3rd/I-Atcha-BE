@@ -28,14 +28,22 @@ public class S3Uploader {
                 .orElseThrow(() -> new IllegalArgumentException("File convert Error"));
 
         // S3 업로드
-        String fileName = multipartFile.getName();
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, file)
-                .withCannedAcl(CannedAccessControlList.PublicRead));
-        String imageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
+        String imageUrl = uploadS3(multipartFile, file);
 
         // 로컬 파일 삭제
         file.delete();
 
+        return imageUrl;
+    }
+
+    /**
+     * S3파일 업로드
+     */
+    private String uploadS3(MultipartFile multipartFile, File file) {
+        String fileName = multipartFile.getName();
+        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, file)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+        String imageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
         return imageUrl;
     }
 
