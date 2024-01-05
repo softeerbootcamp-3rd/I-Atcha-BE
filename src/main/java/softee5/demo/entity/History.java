@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class History {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long historyID;
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")

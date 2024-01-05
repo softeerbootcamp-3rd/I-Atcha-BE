@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Parking {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long parkingID;
     private String name;
     private double latitude;
