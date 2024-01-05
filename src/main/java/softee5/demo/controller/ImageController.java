@@ -20,8 +20,8 @@ public class ImageController {
     private final ImageService imageService;
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BasicResponse> saveImage(MultipartFile multipartFile) throws IOException {
-        imageService.uploadImage(multipartFile);
+    public ResponseEntity<? extends BasicResponse> saveImage(MultipartFile file) throws IOException {
+        imageService.uploadImage(file);
         return ResponseEntity.ok().body(new SuccessResponse());
     }
 }
