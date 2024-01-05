@@ -1,19 +1,16 @@
 package softee5.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Parking {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long parkingID;
     private String name;
     private double latitude;
     private double longitude;
     private String fee;
     private String discount;
-    private String runtime;
+    private String running_time;
 }
