@@ -12,5 +12,18 @@ public class Parking {
     private double longitude;
     private String fee;
     private String discount;
-    private String running_time;
+    private String runningTime;
+
+    public static Parking createParking(String name, double latitude, double longitude, String fee, String discount, String runtime){
+        Parking parking = new Parking();
+
+        parking.name = name;
+        parking.latitude = latitude;
+        parking.longitude = longitude;
+        parking.fee = fee;
+        parking.discount = discount;
+        parking.runningTime = runtime;
+
+        return parking;
+    }
 }
