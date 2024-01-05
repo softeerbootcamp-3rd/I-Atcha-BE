@@ -7,10 +7,12 @@ import lombok.Setter;
 @Setter
 public class DataResponse<T> extends BasicResponse{
     private final static String SUCCESS_STATUS = "OK";
+
+    private String status;
     private T data;
 
     public DataResponse(T data) {
-        super(SUCCESS_STATUS);
+        this.status = SUCCESS_STATUS;
         this.data = data;
     }
 
