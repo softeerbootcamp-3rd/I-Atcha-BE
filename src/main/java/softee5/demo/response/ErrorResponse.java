@@ -7,10 +7,12 @@ import lombok.Setter;
 @Setter
 public class ErrorResponse extends BasicResponse{
     private final static String ERROR_STATUS = "ERROR";
+
+    private String status;
     private String message;
 
     public ErrorResponse(String message) {
-        super(ERROR_STATUS);
+        this.status = ERROR_STATUS;
         this.message = message;
     }
 }
