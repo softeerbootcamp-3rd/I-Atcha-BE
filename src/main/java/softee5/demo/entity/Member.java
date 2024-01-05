@@ -9,6 +9,5 @@ public class Member {
     private Long memberID;
     private String id;
     private String pwd;
-
     private double latitude;
     private double longitude;}
