@@ -20,4 +20,8 @@ public class Memo {
         return  memo;
     }
 
+    public void modifyMemo(String content){
+        this.content = content;
+    }
+
 }

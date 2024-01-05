@@ -18,4 +18,10 @@ public class ExceptionController {
                 .body(new ErrorResponse(e.getMessage()));
     }
 
+    @ExceptionHandler(NoExistException.class)
+    public ResponseEntity< ? extends BasicResponse> noExistExHandle(NoExistException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getMessage()));
+    }
+
 }
