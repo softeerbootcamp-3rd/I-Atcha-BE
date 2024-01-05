@@ -1,8 +1,11 @@
 package softee5.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
