@@ -3,6 +3,7 @@ package softee5.demo.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import softee5.demo.dto.response.MemoResponseDto;
 import softee5.demo.entity.Memo;
 import softee5.demo.exception.NoContentException;
 import softee5.demo.exception.NoExistException;
@@ -13,13 +14,17 @@ import softee5.demo.repository.MemoRepository;
 public class MemoService {
 
     private final MemoRepository memoRepository;
-    public void createMemo(String content) {
+
+    @Transactional
+    public MemoResponseDto createMemo(String content) {
         if(content.isBlank()){
             throw new NoContentException("메모 내용은 필수입니다.");
         }
 
         Memo memo = Memo.createMemo(content);
-        memoRepository.save(memo);
+        Long memoID = memoRepository.save(memo).getMemoID();
+
+        return MemoResponseDto.getMemoResponseDto(memoID);
     }
 
     @Transactional
