@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long memberID;
     private String id;
     private String pwd;

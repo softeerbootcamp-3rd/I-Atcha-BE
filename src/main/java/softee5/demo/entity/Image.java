@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Image {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long imageID;
     private int parkingTime;
     private String link;
