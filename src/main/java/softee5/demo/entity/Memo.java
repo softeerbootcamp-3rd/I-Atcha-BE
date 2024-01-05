@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Memo {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memoID;
     private String content;
 
