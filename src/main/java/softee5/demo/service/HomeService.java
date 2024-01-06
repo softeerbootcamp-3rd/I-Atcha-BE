@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import softee5.demo.dto.HistoryDto;
 import softee5.demo.dto.ParkingLot;
 import softee5.demo.dto.request.HomeExitRequestDto;
+import softee5.demo.dto.response.HistoryDetailResponseDto;
 import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
 import softee5.demo.entity.*;
@@ -71,16 +72,13 @@ public class HomeService {
     }
 
     public HistoryListResponseDto historyList(Long memberId) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
         List<HistoryDto> historyDtos = new ArrayList<>();
 
         List<History> historys = historyRepository.findByMemberId(memberId);
 
-        System.out.printf("=======================");
-
         for (History history : historys) {
             LocalDateTime createTime = history.getCreateTime();
-            String parkingDate = createTime.format(formatter);
+            String parkingDate = formatDate(createTime);
 
             HistoryDto historyDto = HistoryDto.getHistoryDto(history.getHistoryID(), parkingDate, history.getPaidFee(),
                     history.getParkingTime(), history.getParking().getName());
@@ -89,6 +87,20 @@ public class HomeService {
         }
 
         return HistoryListResponseDto.getHistoryListResponseDto(historyDtos);
+    }
+
+    public HistoryDetailResponseDto historyDetail(Long historyId) {
+        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException("존재하지 않는 historyId 입니다."));
+
+        List<String> link = imageRepository.findByHistoryId(historyId);
+
+        return HistoryDetailResponseDto.getHistoryDetailResponseDto(history, link);
+    }
+
+    private  String formatDate(LocalDateTime localDateTime) {
+        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
+
+        return localDateTime.format(DATE_FORMATTER);
     }
 
 }
