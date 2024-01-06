@@ -15,15 +15,11 @@ public class HomeResponseDto {
     private final static String NONE = "없음";
 
     private String myParkingFee;
-    private String link;
-    private String content;
     private ParkingLotDto parkingLotDto;
 
-    public static HomeResponseDto getHomeResponseDto(String myParkingFee, String link, String content, ParkingLotDto parkingLotDto){
+    public static HomeResponseDto getHomeResponseDto(String myParkingFee, ParkingLotDto parkingLotDto){
         return HomeResponseDto.builder()
                 .myParkingFee(myParkingFee)
-                .link(link == "" ? NONE : link)
-                .content(content == "" ? NONE : content)
                 .parkingLotDto(parkingLotDto)
                 .build();
     }
