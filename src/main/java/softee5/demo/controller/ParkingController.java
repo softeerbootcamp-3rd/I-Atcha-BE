@@ -13,16 +13,25 @@ import softee5.demo.response.BasicResponse;
 import softee5.demo.response.DataResponse;
 import softee5.demo.service.ParkingService;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/parking")
 public class ParkingController {
     private final ParkingService parkingService;
 
-    @GetMapping
+    @GetMapping("/withLocation")
     public ResponseEntity<? extends BasicResponse> findParking(@RequestBody @Valid UserLocationDto userLocationDto){
         ParkingDto parkingList = parkingService.getParking(userLocationDto.getLatitude(), userLocationDto.getLongitude());
 
-        return ResponseEntity.ok().body(new DataResponse(parkingList));
+        return ResponseEntity.ok().body(new DataResponse<>(parkingList));
+    }
+
+    @GetMapping("/withoutLocation")
+    public ResponseEntity<? extends BasicResponse> findParkingWithoutLocation(){
+        ParkingDto parkingList = parkingService.getParking();
+
+        return ResponseEntity.ok().body(new DataResponse<>(parkingList));
     }
 }
