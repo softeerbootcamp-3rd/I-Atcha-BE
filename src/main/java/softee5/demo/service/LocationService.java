@@ -23,7 +23,6 @@ public class LocationService {
         }
 
         double distance = Compute.haversine(latitude, longitude, member.getLatitude(), member.getLongitude());
-        System.out.println("distance = " + distance);
 
         return distance > 2;
     }
