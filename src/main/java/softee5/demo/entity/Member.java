@@ -1,5 +1,6 @@
 package softee5.demo.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -11,6 +12,13 @@ public class Member {
     private Long memberID;
     private String id;
     private String pwd;
-    private double latitude;
-    private double longitude;
+    @Nullable
+    private Double latitude;
+    @Nullable
+    private Double longitude;
+
+    public void setLocation(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
