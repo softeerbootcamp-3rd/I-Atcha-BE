@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import softee5.demo.dto.request.HomeExitRequestDto;
+import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
 import softee5.demo.response.BasicResponse;
 import softee5.demo.response.DataResponse;
@@ -29,5 +30,12 @@ public class HomeController {
         homeService.exit(homeExitRequestDto);
 
         return ResponseEntity.ok().body(new SuccessResponse());
+    }
+
+    @GetMapping("/history/{member_id}")
+    public ResponseEntity< ? extends  BasicResponse> historyList(@PathVariable("member_id") Long memberId){
+        HistoryListResponseDto  historyListResponseDto = homeService.historyList(memberId);
+
+        return ResponseEntity.ok().body(new DataResponse(historyListResponseDto));
     }
 }

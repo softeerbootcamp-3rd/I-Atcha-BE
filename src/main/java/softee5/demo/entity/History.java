@@ -1,8 +1,10 @@
 package softee5.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class History extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +15,7 @@ public class History extends BaseTimeEntity{
     @OneToOne
     @JoinColumn(name = "MEMO_ID")
     private Memo memo;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "PARKING_ID")
     private Parking parking;
 

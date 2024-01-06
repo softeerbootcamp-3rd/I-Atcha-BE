@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import softee5.demo.dto.ParkingLotDto;
+import softee5.demo.dto.ParkingLot;
 
 @Data
 @Builder
@@ -13,12 +13,12 @@ import softee5.demo.dto.ParkingLotDto;
 public class HomeResponseDto {
 
     private String myParkingFee;
-    private ParkingLotDto parkingLotDto;
+    private ParkingLot parkingLot;
 
-    public static HomeResponseDto getHomeResponseDto(String myParkingFee, ParkingLotDto parkingLotDto){
+    public static HomeResponseDto getHomeResponseDto(String myParkingFee, ParkingLot parkingLot){
         return HomeResponseDto.builder()
                 .myParkingFee(myParkingFee)
-                .parkingLotDto(parkingLotDto)
+                .parkingLot(parkingLot)
                 .build();
     }
 

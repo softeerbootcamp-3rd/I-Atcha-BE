@@ -2,16 +2,21 @@ package softee5.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import softee5.demo.dto.ParkingLotDto;
+import softee5.demo.dto.HistoryDto;
+import softee5.demo.dto.ParkingLot;
 import softee5.demo.dto.request.HomeExitRequestDto;
+import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
 import softee5.demo.entity.*;
 import softee5.demo.exception.NoExistException;
 import softee5.demo.repository.*;
 
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +35,7 @@ public class HomeService {
         Parking parking = parkingRepository.findByName(name)
                 .orElseThrow(() -> new NoExistException("존재하지 않는 주차장입니다."));
 
-        ParkingLotDto parkingLotDto = ParkingLotDto.getParkingLotDto(parking);
+        ParkingLot parkingLot = ParkingLot.getParkingLotDto(parking);
 
         /**
          * 주차요금 계산하는 로직 추가 예정
@@ -38,7 +43,7 @@ public class HomeService {
 
         String price = numberFormat.format(1000) + "원";
 
-        return HomeResponseDto.getHomeResponseDto(price, parkingLotDto);
+        return HomeResponseDto.getHomeResponseDto(price, parkingLot);
     }
 
     public void exit(HomeExitRequestDto homeExitRequestDto) {
@@ -63,6 +68,27 @@ public class HomeService {
             Image image = imageRepository.findById(homeExitRequestDto.getImageId()).orElseThrow(() -> new NoExistException("존재하지 않는 이미지입니다."));
             image.setHistory(saveHistory);
         }
+    }
+
+    public HistoryListResponseDto historyList(Long memberId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+        List<HistoryDto> historyDtos = new ArrayList<>();
+
+        List<History> historys = historyRepository.findByMemberId(memberId);
+
+        System.out.printf("=======================");
+
+        for (History history : historys) {
+            LocalDateTime createTime = history.getCreateTime();
+            String parkingDate = createTime.format(formatter);
+
+            HistoryDto historyDto = HistoryDto.getHistoryDto(history.getHistoryID(), parkingDate, history.getPaidFee(),
+                    history.getParkingTime(), history.getParking().getName());
+
+            historyDtos.add(historyDto);
+        }
+
+        return HistoryListResponseDto.getHistoryListResponseDto(historyDtos);
     }
 
 }
