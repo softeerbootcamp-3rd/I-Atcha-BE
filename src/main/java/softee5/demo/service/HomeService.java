@@ -23,15 +23,19 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class HomeService {
 
-    private final static Long MEMBER_ID = 1L;
-
     private final ParkingRepository parkingRepository;
     private final MemberRepository memberRepository;
     private final MemoRepository memoRepository;
     private final ImageRepository imageRepository;
     private final HistoryRepository historyRepository;
 
-    private static final NumberFormat numberFormat = NumberFormat.getInstance(Locale.KOREA);
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.KOREA);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
+    private static final String MONEY_UNIT = "원";
+    private static final String NONE_MENO = "없음";
+    private static final int NONE_IMAGE = 0;
+    private static final Long MEMBER_ID = 1L;
+
     public HomeResponseDto homeInfo(String name) {
         Parking parking = parkingRepository.findByName(name)
                 .orElseThrow(() -> new NoExistException("존재하지 않는 주차장입니다."));
@@ -42,7 +46,7 @@ public class HomeService {
          * 주차요금 계산하는 로직 추가 예정
          */
 
-        String price = numberFormat.format(1000) + "원";
+        String price = NUMBER_FORMAT.format(1000) + MONEY_UNIT;
 
         return HomeResponseDto.getHomeResponseDto(price, parkingLot);
     }
@@ -56,7 +60,7 @@ public class HomeService {
 
         Member member = memberRepository.findById(MEMBER_ID).get();
 
-        if(homeExitRequestDto.getContent() != "없음"){
+        if(homeExitRequestDto.getContent() != NONE_MENO){
             Memo memo = Memo.createMemo(homeExitRequestDto.getContent());
             saveMemo = memoRepository.save(memo);
         }
@@ -65,7 +69,7 @@ public class HomeService {
 
         History saveHistory = historyRepository.save(history);
 
-        if(homeExitRequestDto.getImageId() != 0){
+        if(homeExitRequestDto.getImageId() != NONE_IMAGE){
             Image image = imageRepository.findById(homeExitRequestDto.getImageId()).orElseThrow(() -> new NoExistException("존재하지 않는 이미지입니다."));
             image.setHistory(saveHistory);
         }
@@ -98,8 +102,6 @@ public class HomeService {
     }
 
     private String formatDate(LocalDateTime localDateTime) {
-        DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
-
         return localDateTime.format(DATE_FORMATTER);
     }
 
