@@ -25,7 +25,7 @@ public class ImageSaveResponseDto {
 
     public static ImageSaveResponseDto build(Image image) {
         return ImageSaveResponseDto.builder()
-                .imageIDs(image.getImageID())
+                .imageIDs(List.of(image.getImageID()))
                 .build();
     }
 }
