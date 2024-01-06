@@ -12,8 +12,6 @@ import softee5.demo.dto.ParkingLotDto;
 @AllArgsConstructor
 public class HomeResponseDto {
 
-    private final static String NONE = "없음";
-
     private String myParkingFee;
     private ParkingLotDto parkingLotDto;
 

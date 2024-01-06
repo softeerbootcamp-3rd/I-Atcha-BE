@@ -1,11 +1,14 @@
 package softee5.demo.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import softee5.demo.dto.request.HomeExitRequestDto;
 import softee5.demo.dto.response.HomeResponseDto;
 import softee5.demo.response.BasicResponse;
 import softee5.demo.response.DataResponse;
+import softee5.demo.response.SuccessResponse;
 import softee5.demo.service.HomeService;
 
 @RestController
@@ -19,5 +22,12 @@ public class HomeController {
         HomeResponseDto homeResponseDto =  homeService.homeInfo(name);
 
         return ResponseEntity.ok().body(new DataResponse(homeResponseDto));
+    }
+
+    @PostMapping("/exit")
+    public ResponseEntity< ? extends BasicResponse> exit(@RequestBody @Valid HomeExitRequestDto homeExitRequestDto){
+        homeService.exit(homeExitRequestDto);
+
+        return ResponseEntity.ok().body(new SuccessResponse());
     }
 }
