@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import softee5.demo.entity.Parking;
 
+import java.util.Optional;
+
 @Repository
 @Transactional
 public interface ParkingRepository extends JpaRepository<Parking, Long> {
+    Optional<Parking> findByName(String name);
 }

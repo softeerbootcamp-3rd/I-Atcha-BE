@@ -10,4 +10,5 @@ public class Member {
     private String id;
     private String pwd;
     private double latitude;
-    private double longitude;}
+    private double longitude;
+}

@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import softee5.demo.dto.request.MemoRequestDto;
+import softee5.demo.dto.response.MemoResponseDto;
 import softee5.demo.response.BasicResponse;
+import softee5.demo.response.DataResponse;
 import softee5.demo.response.SuccessResponse;
 import softee5.demo.service.MemoService;
 
@@ -19,9 +21,9 @@ public class MemoController {
 
     @PostMapping
     public ResponseEntity<? extends BasicResponse> createMemo(@RequestBody @Valid MemoRequestDto memoRequestDto){
-        memoService.createMemo(memoRequestDto.getContent());
+        MemoResponseDto memoResponseDto = memoService.createMemo(memoRequestDto.getContent());
 
-        return ResponseEntity.ok().body(new SuccessResponse());
+        return ResponseEntity.ok().body(new DataResponse(memoResponseDto));
     }
 
     @PutMapping("/{memo_id}")
