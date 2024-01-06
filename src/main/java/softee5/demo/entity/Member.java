@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Member {
+public class Member extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberID;
@@ -16,6 +16,17 @@ public class Member {
     private Double latitude;
     @Nullable
     private Double longitude;
+
+    public static Member createMember(String id, String pwd, double latitude, double longitude){
+        Member member = new Member();
+
+        member.id = id;
+        member.pwd = pwd;
+        member.latitude = latitude;
+        member.longitude = longitude;
+
+        return member;
+    }
 
     public void setLocation(double latitude, double longitude) {
         this.latitude = latitude;

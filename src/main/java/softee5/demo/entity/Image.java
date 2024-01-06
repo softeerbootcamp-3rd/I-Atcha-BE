@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -31,4 +30,9 @@ public class Image {
     public void updateUploadTime(LocalTime updateTime) {
         this.parkingTime = updateTime;
     }
+
+    public void setHistory(History history){
+        this.history = history;
+    }
+
 }
