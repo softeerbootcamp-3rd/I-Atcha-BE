@@ -28,7 +28,11 @@ public class Image {
         this.link = link;
     }
 
-    public void updateUploadTime(LocalTime updateTime) {
+    public void changeUploadTime(LocalTime updateTime) {
         this.parkingTime = updateTime;
+    }
+
+    public void changeLink(String link) {
+        this.link = link;
     }
 }

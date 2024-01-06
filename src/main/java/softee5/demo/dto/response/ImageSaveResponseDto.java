@@ -22,4 +22,10 @@ public class ImageSaveResponseDto {
                 .imageIDs(ids)
                 .build();
     }
+
+    public static ImageSaveResponseDto build(Image image) {
+        return ImageSaveResponseDto.builder()
+                .imageIDs(image.getImageID())
+                .build();
+    }
 }

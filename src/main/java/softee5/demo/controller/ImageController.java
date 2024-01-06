@@ -1,6 +1,7 @@
 package softee5.demo.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,11 @@ public class ImageController {
     public ResponseEntity<? extends BasicResponse> showImage(@PathVariable("image_id") long id) {
         Image image = imageService.getImage(id);
         return ResponseEntity.ok().body(new DataResponse<>(ImageLinkResponseDto.build(image)));
+    }
+
+    @PutMapping("/save/{image_id}")
+    public ResponseEntity<? extends BasicResponse> changeImage(@PathVariable("image_id") long id, MultipartFile multipartFile) throws IOException {
+        Image image = imageService.changeImage(id, multipartFile);
+        return ResponseEntity.ok().body(new DataResponse<>(ImageSaveResponseDto.build(image)));
     }
 }

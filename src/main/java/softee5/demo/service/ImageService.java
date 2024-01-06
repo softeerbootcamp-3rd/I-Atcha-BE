@@ -49,4 +49,14 @@ public class ImageService {
         return imageRepository.findById(imageId)
                 .orElseThrow(() -> new NoExistException("존재하지 않는 사진입니다"));
     }
+
+    @Transactional
+    public Image changeImage(Long imageId, MultipartFile multipartFile) throws IOException {
+        Image existingImage = imageRepository.findById(imageId).orElseThrow(() -> new NoExistException("존재하지 않는 사진입니다."));
+        s3Uploader.delete(existingImage.getLink());
+        String link = s3Uploader.upload(multipartFile);
+        existingImage.changeLink(link);
+        imageRepository.save(existingImage);
+        return existingImage;
+    }
 }
