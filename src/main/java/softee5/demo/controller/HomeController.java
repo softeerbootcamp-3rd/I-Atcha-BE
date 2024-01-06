@@ -46,4 +46,11 @@ public class HomeController {
 
         return ResponseEntity.ok().body(new DataResponse(historyDetailResponseDto));
     }
+
+    @DeleteMapping("/history/{history_id}")
+    public ResponseEntity<? extends BasicResponse> historyDelete(@PathVariable("history_id") Long historyId){
+        homeService.historyDelete(historyId);
+
+        return ResponseEntity.ok().body(new SuccessResponse());
+    }
 }

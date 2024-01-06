@@ -92,15 +92,27 @@ public class HomeService {
     public HistoryDetailResponseDto historyDetail(Long historyId) {
         History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException("존재하지 않는 historyId 입니다."));
 
-        List<String> link = imageRepository.findByHistoryId(historyId);
+        List<String> link = imageRepository.findLinkByHistoryId(historyId);
 
         return HistoryDetailResponseDto.getHistoryDetailResponseDto(history, link);
     }
 
-    private  String formatDate(LocalDateTime localDateTime) {
+    private String formatDate(LocalDateTime localDateTime) {
         DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
 
         return localDateTime.format(DATE_FORMATTER);
     }
 
+
+    public void historyDelete(Long historyId) {
+        if(!imageRepository.findImageByHistoryId(historyId).isEmpty()){//이미지 먼저 삭제
+            List<Image> images = imageRepository.findImageByHistoryId(historyId);
+            imageRepository.deleteAll(images);
+        }
+
+        //기록 삭제
+        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException("존재하지 않는 이용 기록입니다."));
+
+        historyRepository.delete(history);
+    }
 }
