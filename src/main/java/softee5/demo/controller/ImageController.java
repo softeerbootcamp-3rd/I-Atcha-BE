@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import softee5.demo.dto.response.ImageLinkResponseDto;
 import softee5.demo.dto.response.ImageSaveResponseDto;
 import softee5.demo.entity.Image;
 import softee5.demo.response.BasicResponse;
@@ -25,5 +26,11 @@ public class ImageController {
     public ResponseEntity<? extends BasicResponse> saveImage(@RequestPart("file") List<MultipartFile> files) throws IOException {
         List<Image> images = imageService.uploadImage(files);
         return ResponseEntity.ok().body(new DataResponse(ImageSaveResponseDto.build(images)));
+    }
+
+    @GetMapping("/image/{image_id}")
+    public ResponseEntity<? extends BasicResponse> showImage(@PathVariable("image_id") long id) {
+        Image image = imageService.getImage(id);
+        return ResponseEntity.ok().body(new DataResponse<>(ImageLinkResponseDto.build(image)));
     }
 }

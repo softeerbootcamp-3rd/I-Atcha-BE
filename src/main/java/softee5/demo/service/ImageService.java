@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import softee5.demo.entity.Image;
+import softee5.demo.exception.NoExistException;
 import softee5.demo.repository.ImageRepository;
 import softee5.demo.utils.S3Uploader;
 
@@ -33,5 +34,10 @@ public class ImageService {
             images.add(image);
         }
         return images;
+    }
+
+    public Image getImage(long imageId) {
+        return imageRepository.findById(imageId)
+                .orElseThrow(() -> new NoExistException("존재하지 않는 사진입니다"));
     }
 }
