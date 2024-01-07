@@ -24,14 +24,14 @@ public class HistoryDetailResponseDto {
     private ParkingLot parkingLot;
     private String content;
 
-    public static HistoryDetailResponseDto getHistoryDetailResponseDto(History history, List<String> link){
+    public static HistoryDetailResponseDto getHistoryDetailResponseDto(History history, String fee, List<String> link){
         return HistoryDetailResponseDto.builder()
                 .parkingDate(formatDate(history.getCreateTime()))
                 .parkingTime(history.getParkingTime())
                 .paidFee(history.getPaidFee())
                 .link(link)
-                .parkingLot(ParkingLot.getParkingLotDto(history.getParking()))
-                .content(history.getMemo().getContent())
+                .parkingLot(ParkingLot.getParkingLotDto(fee,history.getParking()))
+                .content(history.getMemo())
                 .build();
     }
 

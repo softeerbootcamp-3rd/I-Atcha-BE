@@ -12,9 +12,7 @@ public class History extends BaseTimeEntity{
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
-    @OneToOne
-    @JoinColumn(name = "MEMO_ID")
-    private Memo memo;
+    private String memo;
     @ManyToOne
     @JoinColumn(name = "PARKING_ID")
     private Parking parking;
@@ -23,7 +21,7 @@ public class History extends BaseTimeEntity{
     private String parkingTime;
 
 
-    public static History createHistory(Member member,Memo memo, Parking parking, String paidFee, String parkingTime){
+    public static History createHistory(Member member, String memo, Parking parking, String paidFee, String parkingTime){
         History history = new History();
 
         history.member = member;

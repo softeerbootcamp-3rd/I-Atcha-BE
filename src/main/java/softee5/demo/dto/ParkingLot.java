@@ -14,10 +14,10 @@ public class ParkingLot {
     private String runningTime;
     private String discount;
 
-    public static ParkingLot getParkingLotDto(Parking parking){
+    public static ParkingLot getParkingLotDto(String fee,Parking parking){
         return ParkingLot.builder()
                 .name(parking.getName())
-                .fee(parking.getFee().replace(",", " |"))
+                .fee(fee)
                 .runningTime(parking.getRunningTime().replace("," ," |"))
                 .discount(parking.getDiscount().replace(",", "\n"))
                 .build();

@@ -8,17 +8,11 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Memo {
+public class Fee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memoID;
-    private String content;
-
-    public static Memo createMemo(String content){
-        Memo memo = new Memo();
-
-        memo.content = content;
-
-        return  memo;
-    }
+    private long feeId;
+    private int freeTime;
+    private int minuteRate;
+    private int addFee;
 }
