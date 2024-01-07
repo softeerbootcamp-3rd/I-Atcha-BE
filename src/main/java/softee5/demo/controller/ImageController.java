@@ -36,7 +36,8 @@ public class ImageController {
     }
 
     @PutMapping(value = "/save/{image_id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<? extends BasicResponse> changeImage(@PathVariable("image_id") long id, @RequestPart("file") MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<? extends BasicResponse> changeImage(@PathVariable("image_id") long id,
+                                                               @RequestPart("file") MultipartFile multipartFile) throws IOException {
         Image image = imageService.changeImage(id, multipartFile);
         return ResponseEntity.ok().body(new DataResponse<>(ImageSaveResponseDto.build(image)));
     }
