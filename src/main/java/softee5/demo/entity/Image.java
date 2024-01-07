@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -34,5 +33,9 @@ public class Image {
 
     public void changeLink(String link) {
         this.link = link;
+    }
+
+    public void setHistory(History history){
+        this.history = history;
     }
 }

@@ -8,14 +8,14 @@ import softee5.demo.entity.Parking;
 @Data
 @Builder
 @AllArgsConstructor
-public class ParkingLotDto {
+public class ParkingLot {
     private String name;
     private String fee;
     private String runningTime;
     private String discount;
 
-    public static ParkingLotDto getParkingLotDto(Parking parking){
-        return ParkingLotDto.builder()
+    public static ParkingLot getParkingLotDto(Parking parking){
+        return ParkingLot.builder()
                 .name(parking.getName())
                 .fee(parking.getFee().replace(",", " |"))
                 .runningTime(parking.getRunningTime().replace("," ," |"))
