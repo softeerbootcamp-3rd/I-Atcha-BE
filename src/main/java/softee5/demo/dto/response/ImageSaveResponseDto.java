@@ -2,30 +2,45 @@ package softee5.demo.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import softee5.demo.entity.Image;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Data
 @Builder
 public class ImageSaveResponseDto {
-    private List<Long> imageIDs;
+    private List<ImageData> imageDataList;
 
     public static ImageSaveResponseDto build(List<Image> images) {
-        List<Long> ids = images.stream()
-                .map(Image::getImageID) // Assuming Image class has getId method
+        List<ImageData> imageDataList = images.stream()
+                .map(m -> ImageData.builder()
+                        .id(m.getImageID())
+                        .imageLink(m.getLink())
+                        .build())
                 .toList();
-
         return ImageSaveResponseDto.builder()
-                .imageIDs(ids)
+                .imageDataList(imageDataList)
                 .build();
     }
 
-    public static ImageSaveResponseDto build(Image image) {
+    public static ImageSaveResponseDto build(Image images) {
+        List<ImageData> imageDataList = Stream.of(images)
+                .map(m -> ImageData.builder()
+                        .id(m.getImageID())
+                        .imageLink(m.getLink())
+                        .build())
+                .toList();
         return ImageSaveResponseDto.builder()
-                .imageIDs(List.of(image.getImageID()))
+                .imageDataList(imageDataList)
                 .build();
+    }
+
+    @Builder
+    @Getter
+    static class ImageData {
+        private long id;
+        private String imageLink;
     }
 }
