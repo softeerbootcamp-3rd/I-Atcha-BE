@@ -2,6 +2,7 @@ package softee5.demo.utils;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,29 +23,29 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    /**
+     * S3파일 업로드
+     */
     public String upload(MultipartFile multipartFile) throws IOException {
-        // 파일 변환
         File file = convertFile(multipartFile)
-                .orElseThrow(() -> new IllegalArgumentException("File convert Error"));
-
-        // S3 업로드
-        String imageUrl = uploadS3(multipartFile, file);
-
-        // 로컬 파일 삭제
-        file.delete();
-
+                .orElseThrow(() -> new IllegalArgumentException("File convert Error")); // 파일 변환
+        String imageUrl = uploadS3(multipartFile, file);    // S3 업로드
+        file.delete();  // 로컬 파일 삭제
         return imageUrl;
     }
 
     /**
-     * S3파일 업로드
+     * S3파일 삭제
      */
+    public void delete(String fileName) {
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
+    }
+
     private String uploadS3(MultipartFile multipartFile, File file) {
         String fileName = multipartFile.getName();
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        String imageUrl = amazonS3Client.getUrl(bucket, fileName).toString();
-        return imageUrl;
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
     private Optional<File> convertFile(MultipartFile multipartFile) throws IOException {
