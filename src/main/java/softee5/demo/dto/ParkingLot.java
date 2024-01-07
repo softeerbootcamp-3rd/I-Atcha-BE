@@ -17,7 +17,7 @@ public class ParkingLot {
     public static ParkingLot getParkingLotDto(Parking parking){
         return ParkingLot.builder()
                 .name(parking.getName())
-                .fee(parking.getFee().replace(",", " |"))
+                .fee("0원")
                 .runningTime(parking.getRunningTime().replace("," ," |"))
                 .discount(parking.getDiscount().replace(",", "\n"))
                 .build();

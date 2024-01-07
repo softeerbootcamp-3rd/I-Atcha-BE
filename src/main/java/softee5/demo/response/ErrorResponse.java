@@ -15,4 +15,6 @@ public class ErrorResponse extends BasicResponse{
         this.status = ERROR_STATUS;
         this.message = message;
     }
+
+
 }

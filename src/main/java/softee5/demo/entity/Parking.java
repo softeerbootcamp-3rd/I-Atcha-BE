@@ -1,9 +1,6 @@
 package softee5.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +14,9 @@ public class Parking {
     private String name;
     private double latitude;
     private double longitude;
-    private String fee;
+    @ManyToOne
+    @JoinColumn(name = "FEE_ID")
+    private Fee fee;
     private String discount;
     private String runningTime;
 }
