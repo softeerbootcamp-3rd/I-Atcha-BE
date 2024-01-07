@@ -13,6 +13,7 @@ import softee5.demo.exception.NoExistException;
 import softee5.demo.repository.*;
 
 import java.text.NumberFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,27 +29,33 @@ public class HomeService {
     private final MemoRepository memoRepository;
     private final ImageRepository imageRepository;
     private final HistoryRepository historyRepository;
-
+    private final FeeRepository feeRepository;
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.KOREA);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
     private static final String MONEY_UNIT = "원";
     private static final String NONE_MENO = "없음";
     private static final int NONE_IMAGE = 0;
     private static final Long MEMBER_ID = 1L;
+    private static final int FREE = 0;
 
     public HomeResponseDto homeInfo(String name) {
         Parking parking = parkingRepository.findByName(name)
                 .orElseThrow(() -> new NoExistException("존재하지 않는 주차장입니다."));
 
-        ParkingLot parkingLot = ParkingLot.getParkingLotDto(parking);
+        long feeId = parking.getFee().getFeeId();
+        Fee fee = feeRepository.findById(feeId).get();
 
-        /**
-         * 주차요금 계산하는 로직 추가 예정
-         */
+        //주차장 요금 정보
+        int freeTime = fee.getFreeTime();
+        int minuteRate = fee.getMinuteRate();
+        int addFee = fee.getAddFee();
 
-        String price = NUMBER_FORMAT.format(1000) + MONEY_UNIT;
+        ParkingLot parkingLot = ParkingLot.getParkingLotDto(findFeeInfo(freeTime, minuteRate, addFee), parking);
 
-        return HomeResponseDto.getHomeResponseDto(price, parkingLot);
+        //요금 계산
+        int price = getPrice(freeTime, minuteRate, addFee);
+
+        return HomeResponseDto.getHomeResponseDto(NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
     }
 
     public void exit(HomeExitRequestDto homeExitRequestDto) {
@@ -96,15 +103,14 @@ public class HomeService {
     public HistoryDetailResponseDto historyDetail(Long historyId) {
         History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException("존재하지 않는 historyId 입니다."));
 
+        int freeTime = history.getParking().getFee().getFreeTime();
+        int minuteRate = history.getParking().getFee().getMinuteRate();
+        int addFee = history.getParking().getFee().getAddFee();
+
         List<String> link = imageRepository.findLinkByHistoryId(historyId);
 
-        return HistoryDetailResponseDto.getHistoryDetailResponseDto(history, link);
+        return HistoryDetailResponseDto.getHistoryDetailResponseDto(history, findFeeInfo(freeTime, minuteRate, addFee), link);
     }
-
-    private String formatDate(LocalDateTime localDateTime) {
-        return localDateTime.format(DATE_FORMATTER);
-    }
-
 
     public void historyDelete(Long historyId) {
         if(!imageRepository.findImageByHistoryId(historyId).isEmpty()){//이미지 먼저 삭제
@@ -117,4 +123,33 @@ public class HomeService {
 
         historyRepository.delete(history);
     }
+
+    private String formatDate(LocalDateTime localDateTime) {
+        return localDateTime.format(DATE_FORMATTER);
+    }
+
+    private static String findFeeInfo(int freeTime, int minuteRate, int addFee) {
+        StringBuilder feeInfo = new StringBuilder();
+
+        if(freeTime != FREE ){
+            feeInfo .append("초기무료 ").append(freeTime).append("분").append("|");
+        }
+
+        feeInfo .append("추가요금").append(minuteRate).append("분당 ").append(addFee).append("원");
+
+        return feeInfo .toString();
+    }
+
+    private int getPrice(int freeTime, int minuteRate, int addFee) {
+        Member member = memberRepository.findById(MEMBER_ID).get();
+
+        Duration duration = Duration.between(member.getUpdateTime(), LocalDateTime.now());
+        int minutes = (int) duration.toMinutes();
+
+        int overTime = Math.max(0, minutes - freeTime);
+        int count = (overTime + minuteRate - 1) / minuteRate;
+
+        return addFee*count;
+    }
+
 }

@@ -12,16 +12,16 @@ import softee5.demo.response.ErrorResponse;
 @Slf4j
 public class ExceptionController {
 
-//    @ExceptionHandler(NoContentException.class)
-//    public ResponseEntity< ? extends BasicResponse> noContentExHandle(NoContentException e){
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                .body(new ErrorResponse(e.getMessage()));
-//    }
-//
-//    @ExceptionHandler(NoExistException.class)
-//    public ResponseEntity< ? extends BasicResponse> noExistExHandle(NoExistException e){
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                .body(new ErrorResponse(e.getMessage()));
-//    }
+    @ExceptionHandler(NoContentException.class)
+    public ResponseEntity< ? extends BasicResponse> noContentExHandle(NoContentException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(NoExistException.class)
+    public ResponseEntity< ? extends BasicResponse> noExistExHandle(NoExistException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(e.getMessage()));
+    }
 
 }
