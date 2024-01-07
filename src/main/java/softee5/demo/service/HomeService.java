@@ -26,7 +26,6 @@ public class HomeService {
 
     private final ParkingRepository parkingRepository;
     private final MemberRepository memberRepository;
-    private final MemoRepository memoRepository;
     private final ImageRepository imageRepository;
     private final HistoryRepository historyRepository;
     private final FeeRepository feeRepository;
@@ -59,7 +58,6 @@ public class HomeService {
     }
 
     public void exit(HomeExitRequestDto homeExitRequestDto) {
-        Memo saveMemo = null;
         History history;
 
         String name = homeExitRequestDto.getName();
@@ -67,12 +65,8 @@ public class HomeService {
 
         Member member = memberRepository.findById(MEMBER_ID).get();
 
-        if(homeExitRequestDto.getContent() != NONE_MENO){
-            Memo memo = Memo.createMemo(homeExitRequestDto.getContent());
-            saveMemo = memoRepository.save(memo);
-        }
-
-        history = History.createHistory(member, saveMemo, parking, homeExitRequestDto.getPaidFee(), homeExitRequestDto.getParkingTime());
+        history = History.createHistory(member, homeExitRequestDto.getContent(),parking,
+                homeExitRequestDto.getPaidFee(), homeExitRequestDto.getParkingTime());
 
         History saveHistory = historyRepository.save(history);
 

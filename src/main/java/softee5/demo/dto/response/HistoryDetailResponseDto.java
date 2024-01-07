@@ -24,9 +24,6 @@ public class HistoryDetailResponseDto {
     private ParkingLot parkingLot;
     private String content;
 
-    /**
-     * 여기 수정 해야함 해야함 해야함 해야함
-     */
     public static HistoryDetailResponseDto getHistoryDetailResponseDto(History history, String fee, List<String> link){
         return HistoryDetailResponseDto.builder()
                 .parkingDate(formatDate(history.getCreateTime()))
@@ -34,7 +31,7 @@ public class HistoryDetailResponseDto {
                 .paidFee(history.getPaidFee())
                 .link(link)
                 .parkingLot(ParkingLot.getParkingLotDto(fee,history.getParking()))
-                .content(history.getMemo().getContent())
+                .content(history.getMemo())
                 .build();
     }
 
