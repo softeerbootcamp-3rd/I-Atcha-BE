@@ -16,6 +16,7 @@ import softee5.demo.service.HomeService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/home")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class HomeController {
     private final HomeService homeService;
 

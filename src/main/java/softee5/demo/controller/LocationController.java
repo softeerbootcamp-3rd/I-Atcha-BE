@@ -13,6 +13,7 @@ import softee5.demo.service.LocationService;
 @RestController
 @RequestMapping("/location")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class LocationController {
     private final LocationService locationService;
 

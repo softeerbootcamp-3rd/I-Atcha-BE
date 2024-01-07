@@ -4,9 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import softee5.demo.entity.Member;
-import softee5.demo.entity.Memo;
 import softee5.demo.exception.NoContentException;
-import softee5.demo.exception.NoExistException;
 import softee5.demo.repository.MemberRepository;
 import softee5.demo.utils.Compute;
 
