@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface HistoryRepository extends JpaRepository<History, Long> {
 
-    @Query("select h from History h where h.member.memberID = :id")
+    @Query("select h from History h where h.member.memberID = :id order by h.historyID desc")
     List<History> findByMemberId(@Param("id") Long memberId);
 }
