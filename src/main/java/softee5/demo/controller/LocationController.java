@@ -5,9 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import softee5.demo.dto.request.UserDto;
-import softee5.demo.response.BasicResponse;
 import softee5.demo.response.DataResponse;
-import softee5.demo.response.SuccessResponse;
+import softee5.demo.response.SingleResponse;
 import softee5.demo.service.LocationService;
 
 @RestController
@@ -18,15 +17,15 @@ public class LocationController {
     private final LocationService locationService;
 
     @PostMapping("/set")
-    public ResponseEntity<? extends BasicResponse> setLocation(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity< ? > setLocation(@RequestBody @Valid UserDto userDto) {
         locationService.setLocation(userDto.getId(), userDto.getLatitude(), userDto.getLongitude());
-        return ResponseEntity.ok().body(new SuccessResponse());
+        return ResponseEntity.ok().body(SingleResponse.success());
     }
 
     @GetMapping("/isFar")
-    public ResponseEntity<? extends BasicResponse> findParking(@RequestBody @Valid UserDto userDto){
+    public ResponseEntity< ? > findParking(@RequestBody @Valid UserDto userDto){
         Boolean result = locationService.checkFar(userDto.getId(), userDto.getLatitude(), userDto.getLongitude());
 
-        return ResponseEntity.ok().body(new DataResponse<>(result));
+        return ResponseEntity.ok().body(DataResponse.success(result));
     }
 }

@@ -6,16 +6,17 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
-public class DataResponse<T> extends BasicResponse{
+public class DataResponse<T>{
 
     private String status;
     private T data;
 
-    public DataResponse(T data) {
-        this.status = HttpStatus.OK.name();
+    public DataResponse(String status, T data) {
+        this.status = status;
         this.data = data;
     }
 
-
-
+    public static <T> DataResponse<T> success(T data){
+        return new DataResponse<>(HttpStatus.OK.name(), data);
+    }
 }
