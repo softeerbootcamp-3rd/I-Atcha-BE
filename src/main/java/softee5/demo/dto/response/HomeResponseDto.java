@@ -12,11 +12,13 @@ import softee5.demo.dto.ParkingLot;
 @AllArgsConstructor
 public class HomeResponseDto {
 
+    private String startTime;
     private String myParkingFee;
     private ParkingLot parkingLot;
 
-    public static HomeResponseDto getHomeResponseDto(String myParkingFee, ParkingLot parkingLot){
+    public static HomeResponseDto getHomeResponseDto(String startTime, String myParkingFee, ParkingLot parkingLot){
         return HomeResponseDto.builder()
+                .startTime(startTime)
                 .myParkingFee(myParkingFee)
                 .parkingLot(parkingLot)
                 .build();

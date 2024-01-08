@@ -31,8 +31,8 @@ public class HomeService {
     private final FeeRepository feeRepository;
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.KOREA);
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
+    private static final DateTimeFormatter START_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final String MONEY_UNIT = "원";
-    private static final String NONE_MENO = "없음";
     private static final int NONE_IMAGE = 0;
     private static final Long MEMBER_ID = 1L;
     private static final int FREE = 0;
@@ -52,8 +52,10 @@ public class HomeService {
         ParkingLot parkingLot = ParkingLot.getParkingLotDto(findFeeInfo(freeTime, minuteRate, addFee), parking);
 
         //요금 계산
+        Member member = memberRepository.findById(MEMBER_ID).get();
         int price = getPrice(freeTime, minuteRate, addFee);
-        return HomeResponseDto.getHomeResponseDto(NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
+        LocalDateTime startTime = member.getUpdateTime();
+        return HomeResponseDto.getHomeResponseDto(startTime.format(START_TIME_FORMATTER),NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
     }
 
     public void exit(HomeExitRequestDto homeExitRequestDto) {
