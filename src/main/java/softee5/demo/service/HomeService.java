@@ -53,7 +53,6 @@ public class HomeService {
 
         //요금 계산
         int price = getPrice(freeTime, minuteRate, addFee);
-
         return HomeResponseDto.getHomeResponseDto(NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
     }
 
@@ -129,7 +128,7 @@ public class HomeService {
             feeInfo .append("초기무료 ").append(freeTime).append("분").append("|");
         }
 
-        feeInfo .append("추가요금").append(minuteRate).append("분당 ").append(addFee).append("원");
+        feeInfo .append("추가요금 ").append(minuteRate).append("분당 ").append(addFee).append("원");
 
         return feeInfo .toString();
     }
