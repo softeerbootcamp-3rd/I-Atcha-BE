@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import softee5.demo.entity.Image;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
