@@ -20,8 +20,8 @@ public class ParkingController {
     private final ParkingService parkingService;
 
     @GetMapping("/withLocation")
-    public ResponseEntity<? extends BasicResponse> findParking(@RequestBody @Valid UserLocationDto userLocationDto){
-        ParkingDto parkingList = parkingService.getParking(userLocationDto.getLatitude(), userLocationDto.getLongitude());
+    public ResponseEntity<? extends BasicResponse> findParking(@RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude){
+        ParkingDto parkingList = parkingService.getParking(latitude, longitude);
 
         return ResponseEntity.ok().body(new DataResponse<>(parkingList));
     }
