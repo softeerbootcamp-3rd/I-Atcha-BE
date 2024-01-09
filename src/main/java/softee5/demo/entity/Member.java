@@ -21,7 +21,7 @@ public class Member extends BaseTimeEntity{
     private Double latitude;
     @Nullable
     private Double longitude;
-    private String parkStartTime;
+    private String parkStartTime = "0:0";
 
     public static Member createMember(String id, String pwd, double latitude, double longitude){
         Member member = new Member();
