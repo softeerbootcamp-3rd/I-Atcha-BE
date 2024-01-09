@@ -52,7 +52,7 @@ public class HomeService {
         //요금 계산
         Member member = memberRepository.findById(MEMBER_ID).get();
         int price = getPrice(freeTime, minuteRate, addFee);
-        LocalDateTime startTime = member.getUpdateTime();
+        LocalDateTime startTime = member.getParkStartTime();
         return HomeResponseDto.getHomeResponseDto(startTime.format(START_TIME_FORMATTER),NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
     }
 
