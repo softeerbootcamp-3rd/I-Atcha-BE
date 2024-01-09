@@ -10,6 +10,7 @@ import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
 import softee5.demo.response.DataResponse;
 import softee5.demo.response.SingleResponse;
+import softee5.demo.service.HistoryService;
 import softee5.demo.service.HomeService;
 
 @RestController
@@ -18,6 +19,7 @@ import softee5.demo.service.HomeService;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class HomeController {
     private final HomeService homeService;
+    private final HistoryService historyService;
 
     @GetMapping
     public ResponseEntity< ? > homeInfo(@RequestParam(value = "name") String name){
@@ -33,23 +35,23 @@ public class HomeController {
         return ResponseEntity.ok().body(SingleResponse.success());
     }
 
-    @GetMapping("/history/{member_id}")
+    @GetMapping("/history/{member_id}") //history 목록
     public ResponseEntity< ? > historyList(@PathVariable("member_id") Long memberId){
-        HistoryListResponseDto  historyListResponseDto = homeService.historyList(memberId);
+        HistoryListResponseDto  historyListResponseDto = historyService.historyList(memberId);
 
         return ResponseEntity.ok().body(DataResponse.success(historyListResponseDto));
     }
 
     @GetMapping("/history/detail/{history_id}")
     public ResponseEntity<? > historyDetail(@PathVariable("history_id") Long historyId){
-        HistoryDetailResponseDto historyDetailResponseDto = homeService.historyDetail(historyId);
+        HistoryDetailResponseDto historyDetailResponseDto = historyService.historyDetail(historyId);
 
         return ResponseEntity.ok().body(DataResponse.success(historyDetailResponseDto));
     }
 
     @DeleteMapping("/history/{history_id}")
     public ResponseEntity<?> historyDelete(@PathVariable("history_id") Long historyId){
-        homeService.historyDelete(historyId);
+        historyService.historyDelete(historyId);
 
         return ResponseEntity.ok().body(SingleResponse.success());
     }

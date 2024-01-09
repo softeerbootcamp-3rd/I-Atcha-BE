@@ -16,8 +16,6 @@ import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -30,7 +28,6 @@ public class HomeService {
     private final HistoryRepository historyRepository;
     private final FeeRepository feeRepository;
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.KOREA);
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
     private static final DateTimeFormatter START_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
     private static final String MONEY_UNIT = "원";
     private static final int NONE_IMAGE = 0;
@@ -77,53 +74,8 @@ public class HomeService {
         }
     }
 
-    public HistoryListResponseDto historyList(Long memberId) {
-        List<HistoryDto> historyDtos = new ArrayList<>();
 
-        List<History> historys = historyRepository.findByMemberId(memberId);
-
-        for (History history : historys) {
-            LocalDateTime createTime = history.getCreateTime();
-            String parkingDate = formatDate(createTime);
-
-            HistoryDto historyDto = HistoryDto.getHistoryDto(history.getHistoryID(), parkingDate, history.getPaidFee(),
-                    history.getParkingTime(), history.getParking().getName());
-
-            historyDtos.add(historyDto);
-        }
-
-        return HistoryListResponseDto.getHistoryListResponseDto(historyDtos);
-    }
-
-    public HistoryDetailResponseDto historyDetail(Long historyId) {
-        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException("존재하지 않는 historyId 입니다."));
-
-        int freeTime = history.getParking().getFee().getFreeTime();
-        int minuteRate = history.getParking().getFee().getMinuteRate();
-        int addFee = history.getParking().getFee().getAddFee();
-
-        List<String> link = imageRepository.findLinkByHistoryId(historyId);
-
-        return HistoryDetailResponseDto.getHistoryDetailResponseDto(history, findFeeInfo(freeTime, minuteRate, addFee), link);
-    }
-
-    public void historyDelete(Long historyId) {
-        if(!imageRepository.findImageByHistoryId(historyId).isEmpty()){//이미지 먼저 삭제
-            List<Image> images = imageRepository.findImageByHistoryId(historyId);
-            imageRepository.deleteAll(images);
-        }
-
-        //기록 삭제
-        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException("존재하지 않는 이용 기록입니다."));
-
-        historyRepository.delete(history);
-    }
-
-    private String formatDate(LocalDateTime localDateTime) {
-        return localDateTime.format(DATE_FORMATTER);
-    }
-
-    private static String findFeeInfo(int freeTime, int minuteRate, int addFee) {
+    private String findFeeInfo(int freeTime, int minuteRate, int addFee) {
         StringBuilder feeInfo = new StringBuilder();
 
         if(freeTime != FREE ){
@@ -141,7 +93,7 @@ public class HomeService {
         Duration duration = Duration.between(member.getUpdateTime(), LocalDateTime.now());
         int minutes = (int) duration.toMinutes();
 
-        int overTime = Math.max(0, minutes - freeTime);
+        int overTime = Math.max(FREE, minutes - freeTime);
         int count = (overTime + minuteRate - 1) / minuteRate;
 
         return addFee*count;
