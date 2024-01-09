@@ -54,8 +54,8 @@ public class HomeService {
         //요금 계산
         Member member = memberRepository.findById(MEMBER_ID).get();
         int price = getPrice(freeTime, minuteRate, addFee);
-        LocalDateTime startTime = member.getParkStartTime();
-        return HomeResponseDto.getHomeResponseDto(startTime.format(START_TIME_FORMATTER),NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
+        String startTime = member.getParkStartTime();   // 주차 시작시간
+        return HomeResponseDto.getHomeResponseDto(startTime,NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
     }
 
     public void exit(HomeExitRequestDto homeExitRequestDto) {
@@ -78,8 +78,7 @@ public class HomeService {
         }
 
         // 주차시간 0시로 초기화
-        LocalDateTime zeroTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
-        member.updateParkingStartTime(zeroTime);
+        member.updateParkingStartTime("0:0");
     }
 
 
@@ -110,5 +109,6 @@ public class HomeService {
     public void changeParkStartTime(UserParkStartDto userParkStartDto) {
         Member member = memberRepository.findById(MEMBER_ID).get();
         member.updateParkingStartTime(userParkStartDto.getParkingStartTime());
+        memberRepository.save(member);
     }
 }

@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -19,8 +21,7 @@ public class Member extends BaseTimeEntity{
     private Double latitude;
     @Nullable
     private Double longitude;
-    @JsonFormat(pattern = "HH:mm")
-    private LocalDateTime parkStartTime;
+    private String parkStartTime = "0:0";
 
     public static Member createMember(String id, String pwd, double latitude, double longitude){
         Member member = new Member();
@@ -39,7 +40,7 @@ public class Member extends BaseTimeEntity{
         setUpdateTime();
     }
 
-    public void updateParkingStartTime(LocalDateTime localDateTime) {
+    public void updateParkingStartTime(String localDateTime) {
         this.parkStartTime = localDateTime;
     }
 
