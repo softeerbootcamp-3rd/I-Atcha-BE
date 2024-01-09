@@ -17,6 +17,7 @@ public class TestController {
     @GetMapping("/")
     public String home() {
         log.info("home");
+        log.info("hi");
         return "server running";
     }
 }
