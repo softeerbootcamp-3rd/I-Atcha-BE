@@ -50,15 +50,15 @@
 
 ```
 // GET인데 성공인 경우(데이터를 return 하는 경우)
-public ResponseEntity< ? extends BasicResponse> examController(){
-    return ResponseEntity.ok().body(new DataResponse(dto 넣으면 됩니다));
+public ResponseEntity< ? > examController(){
+        return ResponseEntity.ok().body(DataResponse.success(homeResponseDto));
 }
 ```
 
 ```
 // POST인데 성공인 경우
-public ResponseEntity< ? extends BasicResponse> examController(){
-    return ResponseEntity.ok().body(new SuccessResponse()); //아무것도 안넣어도 OK이로 나올꺼에요!
+public ResponseEntity< ? > examController(){
+    return ResponseEntity.ok().body(SingleResponse.success()); //아무것도 안넣어도 OK이로 나올꺼에요!
 }
 ```
 
@@ -66,6 +66,6 @@ public ResponseEntity< ? extends BasicResponse> examController(){
 //ERROR 처리를 하고 싶으면 예외 처리하고 이런식으로 하면 될것 같아요! 아직은 예외처리 안하기로 했으니 일단 이렇게 적어놓겠습니다
 public ResponseEntity< ? extends BasicResponse> testException(Exception e){
   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-            .body(new ErrorResponse(e.getMessage()));
+            .body(ErrorResponse.error(e.getMessage()));
 }
 ```

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import softee5.demo.dto.request.UserLocationDto;
 import softee5.demo.dto.response.ParkingDto;
-import softee5.demo.response.BasicResponse;
 import softee5.demo.response.DataResponse;
 import softee5.demo.service.ParkingService;
 
@@ -19,16 +18,16 @@ public class ParkingController {
     private final ParkingService parkingService;
 
     @GetMapping("/withLocation")
-    public ResponseEntity<? extends BasicResponse> findParking(@RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude){
+    public ResponseEntity< ? > findParking(@RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude){
         ParkingDto parkingList = parkingService.getParking(latitude, longitude);
 
-        return ResponseEntity.ok().body(new DataResponse<>(parkingList));
+        return ResponseEntity.ok().body(DataResponse.success(parkingList));
     }
 
     @GetMapping("/withoutLocation")
-    public ResponseEntity<? extends BasicResponse> findParkingWithoutLocation(){
+    public ResponseEntity< ? > findParkingWithoutLocation(){
         ParkingDto parkingList = parkingService.getParking();
 
-        return ResponseEntity.ok().body(new DataResponse<>(parkingList));
+        return ResponseEntity.ok().body(DataResponse.success(parkingList));
     }
 }

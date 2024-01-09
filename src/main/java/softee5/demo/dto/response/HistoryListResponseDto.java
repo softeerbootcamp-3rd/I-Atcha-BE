@@ -13,6 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryListResponseDto {
+    private int count;
+    private String totalTime;
+    private String totalFee;
+    private String avgTime;
+    private String avgFee;
     List<HistoryDto> historys;
 
     public static HistoryListResponseDto getHistoryListResponseDto(List<HistoryDto> historyDtos){

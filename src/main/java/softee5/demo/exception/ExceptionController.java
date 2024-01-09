@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import softee5.demo.response.BasicResponse;
 import softee5.demo.response.ErrorResponse;
 
 @RestControllerAdvice
@@ -13,15 +12,15 @@ import softee5.demo.response.ErrorResponse;
 public class ExceptionController {
 
     @ExceptionHandler(NoContentException.class)
-    public ResponseEntity< ? extends BasicResponse> noContentExHandle(NoContentException e){
+    public ResponseEntity< ? > noContentExHandle(NoContentException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(e.getMessage()));
+                .body(ErrorResponse.error(e.getMessage()));
     }
 
     @ExceptionHandler(NoExistException.class)
-    public ResponseEntity< ? extends BasicResponse> noExistExHandle(NoExistException e){
+    public ResponseEntity< ? > noExistExHandle(NoExistException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(e.getMessage()));
+                .body(ErrorResponse.error(e.getMessage()));
     }
 
 }
