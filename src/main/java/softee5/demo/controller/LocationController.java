@@ -29,13 +29,13 @@ public class LocationController {
     }
 
     @PostMapping("/set/{memberId}")
-    public ResponseEntity<?> setLocation(@PathVariable("memberId") String memberId, @RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude) {
+    public ResponseEntity<?> setLocation(@PathVariable("memberId") Long memberId, @RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude) {
         locationService.setLocation(memberId, latitude, longitude);
         return ResponseEntity.ok().body(SingleResponse.success());
     }
 
     @GetMapping("/isFar/{memberId}")
-    public ResponseEntity<?> findParking(@PathVariable("memberId") String memberId, @RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude){
+    public ResponseEntity<?> findParking(@PathVariable("memberId") Long memberId, @RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude){
         Boolean result = locationService.checkFar(memberId, latitude, longitude);
 
         return ResponseEntity.ok().body(DataResponse.success(result));

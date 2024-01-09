@@ -13,8 +13,8 @@ import softee5.demo.utils.Compute;
 public class LocationService {
     private final MemberRepository memberRepository;
 
-    public Boolean checkFar(String id, Double latitude, Double longitude) {
-        Member member = memberRepository.findById(id);
+    public Boolean checkFar(Long id, Double latitude, Double longitude) {
+        Member member = memberRepository.findById(1L).get();
 
         if (member.getLatitude() == null || member.getLongitude() == null) {
             throw new NoContentException("위치 정보가 없습니다.");
@@ -26,9 +26,9 @@ public class LocationService {
     }
 
     @Transactional
-    public void setLocation(String id, Double latitude, Double longitude) {
+    public void setLocation(Long id, Double latitude, Double longitude) {
 
-        Member member = memberRepository.findById(id);
+        Member member = memberRepository.findById(1L).get();
 
         member.setLocation(latitude, longitude);
     }
