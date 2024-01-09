@@ -15,7 +15,9 @@ import softee5.demo.repository.*;
 
 import java.text.NumberFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -63,6 +65,7 @@ public class HomeService {
         Parking parking = parkingRepository.findByName(name).orElseThrow(() -> new NoExistException("존재하지 않는 주차장입니다."));
 
         Member member = memberRepository.findById(MEMBER_ID).get();
+        // 주차시간
 
         history = History.createHistory(member, homeExitRequestDto.getContent(),parking,
                 homeExitRequestDto.getPaidFee(), homeExitRequestDto.getParkingTime());
@@ -73,6 +76,10 @@ public class HomeService {
             Image image = imageRepository.findById(homeExitRequestDto.getImageId()).orElseThrow(() -> new NoExistException("존재하지 않는 이미지입니다."));
             image.setHistory(saveHistory);
         }
+
+        // 주차시간 0시로 초기화
+        LocalDateTime zeroTime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
+        member.updateParkingStartTime(zeroTime);
     }
 
 
