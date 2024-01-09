@@ -21,4 +21,8 @@ public class BaseTimeEntity {
 
     @LastModifiedDate
     private LocalDateTime updateTime;
+
+    public void setUpdateTime(){
+        this.updateTime = LocalDateTime.now();
+    }
 }

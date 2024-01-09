@@ -31,5 +31,7 @@ public class Member extends BaseTimeEntity{
     public void setLocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
+        setUpdateTime();
     }
+
 }
