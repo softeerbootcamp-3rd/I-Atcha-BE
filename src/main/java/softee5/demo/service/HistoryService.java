@@ -18,7 +18,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +25,6 @@ public class HistoryService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.KOREA);
     private static final int FREE = 0;
-    private static final Long MEMBER_ID = 1L;
 
     private final HistoryRepository historyRepository;
     private final ImageRepository imageRepository;
@@ -34,41 +32,48 @@ public class HistoryService {
     public HistoryListResponseDto historyList(Long memberId) {
         List<HistoryDto> historyDtos = new ArrayList<>();
 
-        List<History> historys = historyRepository.findByMemberId(MEMBER_ID);
+        List<History> historys = historyRepository.findByMemberId(memberId);
 
         int count = historys.size();
-        LocalTime totalParkingTime = LocalTime.of(0, 0);
-        int totalFee = 0;
-        int totalMinutes = 0;
+        String totalTimeToString = "";
+        String avgTime = "";
+        String totalFeeToString = "";
+        String avgFee = "";
 
-        for (History history : historys) {
-            LocalTime parkingTime = extractTime(history.getParkingTime()); //문자열 시간을 LocalTime으로 가져오기
+        if(count !=0){
+            LocalTime totalParkingTime = LocalTime.of(0, 0);
+            int totalFee = 0;
+            int totalMinutes = 0;
 
-            //총 주차장 이용 시간 구하기
-            totalParkingTime = totalParkingTime.plusHours(parkingTime.getHour()).plusMinutes(parkingTime.getMinute());
-            totalMinutes += parkingTime.getHour() * 60 + parkingTime.getMinute();
+            for (History history : historys) {
+                LocalTime parkingTime = extractTime(history.getParkingTime()); //문자열 시간을 LocalTime으로 가져오기
 
-            //총 지불 금액 구하기
-            history.getPaidFee();
-            totalFee += parseCurrency(history.getPaidFee());
+                //총 주차장 이용 시간 구하기
+                totalParkingTime = totalParkingTime.plusHours(parkingTime.getHour()).plusMinutes(parkingTime.getMinute());
+                totalMinutes += parkingTime.getHour() * 60 + parkingTime.getMinute();
 
-            //주차 날짜 구하기
-            LocalDateTime createTime = history.getCreateTime();
-            String parkingDate = formatDate(createTime);
+                //총 지불 금액 구하기
+                history.getPaidFee();
+                totalFee += parseCurrency(history.getPaidFee());
 
-            HistoryDto historyDto = HistoryDto.getHistoryDto(history.getHistoryID(), parkingDate, history.getPaidFee(),
-                    history.getParkingTime(), history.getParking().getName());
+                //주차 날짜 구하기
+                LocalDateTime createTime = history.getCreateTime();
+                String parkingDate = formatDate(createTime);
 
-            historyDtos.add(historyDto);
+                HistoryDto historyDto = HistoryDto.getHistoryDto(history.getHistoryID(), parkingDate, history.getPaidFee(),
+                        history.getParkingTime(), history.getParking().getName());
+
+                historyDtos.add(historyDto);
+            }
+
+            //시간
+            totalTimeToString = totalParkingTime.format(DateTimeFormatter.ofPattern("H시간 mm분")); //총 이용시간
+            avgTime = getAvgTime(totalMinutes, count); //평균 이용시간
+
+            //금액
+            totalFeeToString = NUMBER_FORMAT.format(totalFee);//총 지불 금액
+            avgFee = calculateAverage(totalFee, count);//평균 지불 금액
         }
-
-        //시간
-        String totalTimeToString = totalParkingTime.format(DateTimeFormatter.ofPattern("H시간 mm분")); //총 이용시간
-        String avgTime = getAvgTime(totalMinutes, count); //평균 이용시간
-
-        //금액
-        String totalFeeToString = NUMBER_FORMAT.format(totalFee);//총 지불 금액
-        String avgFee = calculateAverage(totalFee, count);//평균 지불 금액
 
         return HistoryListResponseDto.getHistoryListResponseDto(count, totalTimeToString, totalFeeToString,
                 avgTime, avgFee, historyDtos);
