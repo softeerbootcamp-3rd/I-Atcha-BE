@@ -11,17 +11,20 @@ import softee5.demo.exception.NoExistException;
 import softee5.demo.repository.HistoryRepository;
 import softee5.demo.repository.ImageRepository;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class HistoryService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy.MM.dd");
+    private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance(Locale.KOREA);
     private static final int FREE = 0;
     private static final Long MEMBER_ID = 1L;
 
@@ -64,15 +67,11 @@ public class HistoryService {
         String avgTime = getAvgTime(totalMinutes, count); //평균 이용시간
 
         //금액
-        String totalFeeToString = totalFee + "원";//총 지불 금액
-        String avgFee = calculateAverage(totalFee, count) + "원";//평균 지불 금액
+        String totalFeeToString = NUMBER_FORMAT.format(totalFee);//총 지불 금액
+        String avgFee = calculateAverage(totalFee, count);//평균 지불 금액
 
-        System.out.println("totalTimeToString = " + totalTimeToString);
-        System.out.println("totalFeeToString = " + totalFeeToString);
-        System.out.println("avgTimeToString = " + avgTime);
-        System.out.println("avgFee = " + avgFee);
-
-        return HistoryListResponseDto.getHistoryListResponseDto(historyDtos);
+        return HistoryListResponseDto.getHistoryListResponseDto(count, totalTimeToString, totalFeeToString,
+                avgTime, avgFee, historyDtos);
     }
 
     private String getAvgTime(int totalMinutes, int count) {
@@ -87,8 +86,9 @@ public class HistoryService {
         return avgTime;
     }
 
-    private long calculateAverage(int sum, int count) { //평균 계산
-        return count > 0 ? Math.round((double) sum / count) : 0;
+    private String calculateAverage(int sum, int count) { //평균 계산
+        long fee = count > 0 ? Math.round((double) sum / count) : 0;
+        return NUMBER_FORMAT.format(fee);
     }
     private int parseCurrency(String currency) {
         return Integer.parseInt(currency.replaceAll("[^0-9]", ""));//숫자 제외 나머지 제거

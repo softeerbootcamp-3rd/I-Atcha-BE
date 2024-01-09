@@ -20,8 +20,14 @@ public class HistoryListResponseDto {
     private String avgFee;
     List<HistoryDto> historys;
 
-    public static HistoryListResponseDto getHistoryListResponseDto(List<HistoryDto> historyDtos){
+    public static HistoryListResponseDto getHistoryListResponseDto(int count, String totalTime, String totalFee,
+            String avgTime, String avgFee, List<HistoryDto> historyDtos){
         return HistoryListResponseDto.builder()
+                .count(count)
+                .totalTime(totalTime)
+                .totalFee(totalFee)
+                .avgTime(avgTime)
+                .avgFee(avgFee)
                 .historys(historyDtos)
                 .build();
     }
