@@ -1,10 +1,10 @@
 package softee5.demo.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import softee5.demo.dto.request.UserDto;
-import softee5.demo.response.BasicResponse;
 import softee5.demo.response.DataResponse;
 import softee5.demo.response.SingleResponse;
 import softee5.demo.service.LocationService;
@@ -23,13 +23,15 @@ public class LocationController {
     }
 
     @GetMapping("/isFar")
-    public ResponseEntity< ? > findParking(@RequestBody @Valid UserDto userDto){
+    public ResponseEntity< ? > findParking(@RequestBody @Valid UserDto userDto) {
         Boolean result = locationService.checkFar(userDto.getId(), userDto.getLatitude(), userDto.getLongitude());
+        return ResponseEntity.ok().body(DataResponse.success(result));
+    }
 
     @PostMapping("/set/{memberId}")
     public ResponseEntity<?> setLocation(@PathVariable("memberId") String memberId, @RequestParam(value = "latitude") double latitude, @RequestParam(value = "longitude") double longitude) {
         locationService.setLocation(memberId, latitude, longitude);
-        return ResponseEntity.ok().body(new SuccessResponse());
+        return ResponseEntity.ok().body(SingleResponse.success());
     }
 
     @GetMapping("/isFar/{memberId}")
