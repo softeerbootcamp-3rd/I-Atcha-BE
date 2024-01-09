@@ -114,7 +114,7 @@ public class HistoryService {
         int minuteRate = history.getParking().getFee().getMinuteRate();
         int addFee = history.getParking().getFee().getAddFee();
 
-        List<String> link = imageRepository.findLinkByHistoryId(historyId);
+        String link = imageRepository.findLinkByHistoryId(historyId);
 
         return HistoryDetailResponseDto.getHistoryDetailResponseDto(history, findFeeInfo(freeTime, minuteRate, addFee), link);
     }

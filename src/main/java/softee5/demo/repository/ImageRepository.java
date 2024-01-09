@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query("select i.link from Image i where i.history.historyID = :id")
-    List<String> findLinkByHistoryId(@Param("id") Long historyId);
+    String findLinkByHistoryId(@Param("id") Long historyId);
 
     @Query("select i from Image i where i.history.historyID = :id")
     List<Image> findImageByHistoryId(@Param("id") Long historyId);
