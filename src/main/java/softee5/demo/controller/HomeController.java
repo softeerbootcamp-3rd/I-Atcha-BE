@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import softee5.demo.dto.request.HomeExitRequestDto;
+import softee5.demo.dto.request.UserParkStartDto;
 import softee5.demo.dto.response.HistoryDetailResponseDto;
 import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
@@ -26,6 +27,12 @@ public class HomeController {
         HomeResponseDto homeResponseDto =  homeService.homeInfo(name);
 
         return ResponseEntity.ok().body(DataResponse.success(homeResponseDto));
+    }
+
+    @PostMapping("/park/start")
+    public ResponseEntity< ? > startPark(@RequestBody UserParkStartDto userParkStartDto){
+        homeService.changeParkStartTime(userParkStartDto);
+        return ResponseEntity.ok().body(SingleResponse.success());
     }
 
     @PostMapping("/exit")

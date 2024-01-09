@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import softee5.demo.dto.HistoryDto;
 import softee5.demo.dto.ParkingLot;
 import softee5.demo.dto.request.HomeExitRequestDto;
+import softee5.demo.dto.request.UserParkStartDto;
 import softee5.demo.dto.response.HistoryDetailResponseDto;
 import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
@@ -99,4 +100,8 @@ public class HomeService {
         return addFee*count;
     }
 
+    public void changeParkStartTime(UserParkStartDto userParkStartDto) {
+        Member member = memberRepository.findById(MEMBER_ID).get();
+        member.updateParkingStartTime(userParkStartDto.getParkingStartTime());
+    }
 }

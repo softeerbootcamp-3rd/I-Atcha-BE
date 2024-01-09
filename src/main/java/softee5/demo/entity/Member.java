@@ -4,6 +4,8 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 public class Member extends BaseTimeEntity{
@@ -16,6 +18,7 @@ public class Member extends BaseTimeEntity{
     private Double latitude;
     @Nullable
     private Double longitude;
+    private LocalDateTime parkStartTime;
 
     public static Member createMember(String id, String pwd, double latitude, double longitude){
         Member member = new Member();
@@ -32,6 +35,10 @@ public class Member extends BaseTimeEntity{
         this.latitude = latitude;
         this.longitude = longitude;
         setUpdateTime();
+    }
+
+    public void updateParkingStartTime(LocalDateTime localDateTime) {
+        this.parkStartTime = localDateTime;
     }
 
 }
