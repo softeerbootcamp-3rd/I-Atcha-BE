@@ -1,5 +1,6 @@
 package softee5.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class Member extends BaseTimeEntity{
     private Double latitude;
     @Nullable
     private Double longitude;
+    @JsonFormat(pattern = "HH:mm")
     private LocalDateTime parkStartTime;
 
     public static Member createMember(String id, String pwd, double latitude, double longitude){
