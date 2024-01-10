@@ -1,5 +1,6 @@
 package softee5.demo.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import softee5.demo.dto.HistoryDto;
@@ -58,6 +59,7 @@ public class HomeService {
         return HomeResponseDto.getHomeResponseDto(startTime.format(START_TIME_FORMATTER),NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
     }
 
+    @Transactional
     public void exit(HomeExitRequestDto homeExitRequestDto) {
         History history;
 
