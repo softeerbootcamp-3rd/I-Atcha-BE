@@ -29,7 +29,8 @@ public class ImageService {
 
         List<Image> images = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
-            String link = s3Uploader.upload(multipartFile);
+            String saveFileName = s3Uploader.upload(multipartFile);
+            String link = s3Uploader.getFileUrl(saveFileName);
             createImage(link, images);
         }
         return images;
