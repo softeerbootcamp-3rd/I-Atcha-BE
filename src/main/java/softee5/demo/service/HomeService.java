@@ -54,8 +54,8 @@ public class HomeService {
         //요금 계산
         Member member = memberRepository.findById(MEMBER_ID).get();
         int price = getPrice(freeTime, minuteRate, addFee);
-        String startTime = member.getParkStartTime();   // 주차 시작시간
-        return HomeResponseDto.getHomeResponseDto(startTime,NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
+        LocalDateTime startTime = member.getUpdateTime();
+        return HomeResponseDto.getHomeResponseDto(startTime.format(START_TIME_FORMATTER),NUMBER_FORMAT.format(price) + MONEY_UNIT, parkingLot);
     }
 
     public void exit(HomeExitRequestDto homeExitRequestDto) {
