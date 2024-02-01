@@ -63,9 +63,24 @@ public ResponseEntity< ? > examController(){
 ```
 
 ```
-//ERROR 처리를 하고 싶으면 예외 처리하고 이런식으로 하면 될것 같아요! 아직은 예외처리 안하기로 했으니 일단 이렇게 적어놓겠습니다
+//ERROR 처리를 하고 싶으면 예외 처리하고 이런식으로 하면 될것 같아요!
 public ResponseEntity< ? extends BasicResponse> testException(Exception e){
   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(ErrorResponse.error(e.getMessage()));
 }
 ```
+
+### Error Enum 사용하기 ✏️
+
+1. ErroMessage에 enum타입을 작성
+
+```java
+NOT_EXIST_EX_ERROR("~~한 에러입니다.");
+```
+
+2. ERROR 처리를 위한 Enum 사용하기
+
+```
+new definedError(NOT_EXIST_EX_ERROR);
+```
+추후 에러 코드 정의나 다른 에러처리로 확장시 용이할거에요!
