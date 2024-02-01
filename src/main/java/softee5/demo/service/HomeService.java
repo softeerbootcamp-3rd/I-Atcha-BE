@@ -11,6 +11,7 @@ import softee5.demo.dto.response.HistoryDetailResponseDto;
 import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
 import softee5.demo.entity.*;
+import softee5.demo.exception.ErrorMessage;
 import softee5.demo.exception.NoExistException;
 import softee5.demo.repository.*;
 
@@ -40,7 +41,7 @@ public class HomeService {
 
     public HomeResponseDto homeInfo(String name) {
         Parking parking = parkingRepository.findByName(name)
-                .orElseThrow(() -> new NoExistException("존재하지 않는 주차장입니다."));
+                .orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
 
         long feeId = parking.getFee().getFeeId();
         Fee fee = feeRepository.findById(feeId).get();
@@ -64,7 +65,7 @@ public class HomeService {
         History history;
 
         String name = homeExitRequestDto.getName();
-        Parking parking = parkingRepository.findByName(name).orElseThrow(() -> new NoExistException("존재하지 않는 주차장입니다."));
+        Parking parking = parkingRepository.findByName(name).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
 
         Member member = memberRepository.findById(MEMBER_ID).get();
         // 주차시간
@@ -75,7 +76,7 @@ public class HomeService {
         History saveHistory = historyRepository.save(history);
 
         if(homeExitRequestDto.getImageId() != NONE_IMAGE){
-            Image image = imageRepository.findById(homeExitRequestDto.getImageId()).orElseThrow(() -> new NoExistException("존재하지 않는 이미지입니다."));
+            Image image = imageRepository.findById(homeExitRequestDto.getImageId()).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
             image.setHistory(saveHistory);
         }
 

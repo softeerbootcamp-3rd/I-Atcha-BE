@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import softee5.demo.entity.Member;
+import softee5.demo.exception.ErrorMessage;
 import softee5.demo.exception.NoContentException;
 import softee5.demo.repository.MemberRepository;
 import softee5.demo.utils.Compute;
@@ -17,7 +18,7 @@ public class LocationService {
         Member member = memberRepository.findById(1L).get();
 
         if (member.getLatitude() == null || member.getLongitude() == null) {
-            throw new NoContentException("위치 정보가 없습니다.");
+            throw new NoContentException(ErrorMessage.NOT_EXIST_LOCATION);
         }
 
         double distance = Compute.haversine(latitude, longitude, member.getLatitude(), member.getLongitude());

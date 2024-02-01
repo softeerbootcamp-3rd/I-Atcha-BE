@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import softee5.demo.entity.Image;
+import softee5.demo.exception.ErrorMessage;
 import softee5.demo.exception.NoContentException;
 import softee5.demo.exception.NoExistException;
 import softee5.demo.repository.ImageRepository;
@@ -48,12 +49,12 @@ public class ImageService {
 
     public Image getImage(long imageId) {
         return imageRepository.findById(imageId)
-                .orElseThrow(() -> new NoExistException("존재하지 않는 사진입니다"));
+                .orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
     }
 
     @Transactional
     public Image changeImage(Long imageId, MultipartFile multipartFile) throws IOException {
-        Image existingImage = imageRepository.findById(imageId).orElseThrow(() -> new NoExistException("존재하지 않는 사진입니다."));
+        Image existingImage = imageRepository.findById(imageId).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_IMAGE));
         s3Uploader.delete(existingImage.getLink());
         String link = s3Uploader.upload(multipartFile);
         existingImage.changeLink(link);
