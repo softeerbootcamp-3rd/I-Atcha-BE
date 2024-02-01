@@ -25,7 +25,7 @@ public class ImageService {
     @Transactional
     public List<Image> uploadImage(List<MultipartFile> multipartFiles) throws IOException {
         if (multipartFiles.isEmpty()) {
-            throw new NoContentException("사진이 없습니다.");
+            throw new NoContentException(ErrorMessage.NOT_EXIST_IMAGE);
         }
 
         List<Image> images = new ArrayList<>();
