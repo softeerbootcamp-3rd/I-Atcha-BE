@@ -3,23 +3,18 @@ package softee5.demo.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import softee5.demo.dto.HistoryDto;
 import softee5.demo.dto.ParkingLot;
 import softee5.demo.dto.request.HomeExitRequestDto;
 import softee5.demo.dto.request.UserParkStartDto;
-import softee5.demo.dto.response.HistoryDetailResponseDto;
-import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.dto.response.HomeResponseDto;
 import softee5.demo.entity.*;
-import softee5.demo.exception.ErrorMessage;
 import softee5.demo.exception.NoExistException;
+import softee5.demo.exception.message.ParkingError;
 import softee5.demo.repository.*;
 
 import java.text.NumberFormat;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -41,7 +36,7 @@ public class HomeService {
 
     public HomeResponseDto homeInfo(String name) {
         Parking parking = parkingRepository.findByName(name)
-                .orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
+                .orElseThrow(() -> new NoExistException(ParkingError.NOT_EXIST_PARKING));
 
         long feeId = parking.getFee().getFeeId();
         Fee fee = feeRepository.findById(feeId).get();
@@ -65,7 +60,7 @@ public class HomeService {
         History history;
 
         String name = homeExitRequestDto.getName();
-        Parking parking = parkingRepository.findByName(name).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
+        Parking parking = parkingRepository.findByName(name).orElseThrow(() -> new NoExistException(ParkingError.NOT_EXIST_PARKING));
 
         Member member = memberRepository.findById(MEMBER_ID).get();
         // 주차시간
@@ -76,7 +71,7 @@ public class HomeService {
         History saveHistory = historyRepository.save(history);
 
         if(homeExitRequestDto.getImageId() != NONE_IMAGE){
-            Image image = imageRepository.findById(homeExitRequestDto.getImageId()).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
+            Image image = imageRepository.findById(homeExitRequestDto.getImageId()).orElseThrow(() -> new NoExistException(ParkingError.NOT_EXIST_PARKING));
             image.setHistory(saveHistory);
         }
 

@@ -7,8 +7,8 @@ import softee5.demo.dto.response.HistoryDetailResponseDto;
 import softee5.demo.dto.response.HistoryListResponseDto;
 import softee5.demo.entity.History;
 import softee5.demo.entity.Image;
-import softee5.demo.exception.ErrorMessage;
 import softee5.demo.exception.NoExistException;
+import softee5.demo.exception.message.HistoryError;
 import softee5.demo.repository.HistoryRepository;
 import softee5.demo.repository.ImageRepository;
 
@@ -109,7 +109,7 @@ public class HistoryService {
     }
 
     public HistoryDetailResponseDto historyDetail(Long historyId) {
-        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_HISTORY));
+        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException(HistoryError.NOT_EXIST_HISTORY));
 
         int freeTime = history.getParking().getFee().getFreeTime();
         int minuteRate = history.getParking().getFee().getMinuteRate();
@@ -127,7 +127,7 @@ public class HistoryService {
         }
 
         //기록 삭제
-        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_HISTORY));
+        History history = historyRepository.findById(historyId).orElseThrow(() -> new NoExistException(HistoryError.NOT_EXIST_HISTORY));
 
         historyRepository.delete(history);
     }

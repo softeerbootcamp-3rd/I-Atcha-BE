@@ -5,9 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import softee5.demo.entity.Image;
-import softee5.demo.exception.ErrorMessage;
 import softee5.demo.exception.NoContentException;
 import softee5.demo.exception.NoExistException;
+import softee5.demo.exception.message.ImageError;
+import softee5.demo.exception.message.ParkingError;
 import softee5.demo.repository.ImageRepository;
 import softee5.demo.utils.S3Uploader;
 
@@ -25,7 +26,7 @@ public class ImageService {
     @Transactional
     public List<Image> uploadImage(List<MultipartFile> multipartFiles) throws IOException {
         if (multipartFiles.isEmpty()) {
-            throw new NoContentException(ErrorMessage.NOT_EXIST_IMAGE);
+            throw new NoContentException(ImageError.NOT_EXIST_IMAGE);
         }
 
         List<Image> images = new ArrayList<>();
@@ -49,12 +50,12 @@ public class ImageService {
 
     public Image getImage(long imageId) {
         return imageRepository.findById(imageId)
-                .orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_PARKING));
+                .orElseThrow(() -> new NoExistException(ParkingError.NOT_EXIST_PARKING));
     }
 
     @Transactional
     public Image changeImage(Long imageId, MultipartFile multipartFile) throws IOException {
-        Image existingImage = imageRepository.findById(imageId).orElseThrow(() -> new NoExistException(ErrorMessage.NOT_EXIST_IMAGE));
+        Image existingImage = imageRepository.findById(imageId).orElseThrow(() -> new NoExistException(ImageError.NOT_EXIST_IMAGE));
         s3Uploader.delete(existingImage.getLink());
         String link = s3Uploader.upload(multipartFile);
         existingImage.changeLink(link);
